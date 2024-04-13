@@ -3,9 +3,10 @@ import Chats from "./components/chats/Chats";
 import Detail from "./components/detail/Detail";
 import List from "./components/list/List";
 import Login from "./components/login/Login";
+import Notification from "./components/notification/Notification";
 
 const App = () => {
-  const isLogingType = true;
+  const isLogingType = false;
 
   const ChooseAndBuildComponent = () => {
     if (isLogingType) {
@@ -24,6 +25,7 @@ const App = () => {
   return (
     <div className="container">
       <ChooseAndBuildComponent />
+      <Notification />
     </div>
   );
 };

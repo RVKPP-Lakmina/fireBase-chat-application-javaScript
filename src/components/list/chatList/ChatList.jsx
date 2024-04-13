@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./chatList.css";
+import AddUser from "../../addUser/AddUser";
 
 const ChatList = () => {
   const [appMode, setAppMode] = useState(false);
@@ -18,6 +19,7 @@ const ChatList = () => {
           name="add-icon"
           onClick={() => setAppMode((prev) => !prev)}
         />
+        <AddUser/>
       </div>
 
       <div className="chat-items">

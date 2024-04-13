@@ -1,0 +1,103 @@
+.detail-container {
+  flex: 1;
+
+  .user {
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid #dddddd35;
+
+    img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  }
+
+  .info {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .option {
+      .title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        img {
+          width: 30px;
+          height: 30px;
+          padding: 10px;
+          background-color: rgba(17, 25, 40, 0.3);
+          border-radius: 50%;
+          cursor: pointer;
+        }
+      }
+
+      .photos {
+        padding-top: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 15px;
+
+        .photo-item {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          .photo-detail {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+
+            img {
+              width: 40px;
+              height: 40px;
+              object-fit: cover;
+              border-radius: 5px;
+            }
+
+            span {
+              font-size: 14px;
+              color: lightgray;
+              font-weight: 300;
+            }
+          }
+
+          .download-icon-image {
+            width: 30px;
+            height: 30px;
+            padding: 10px;
+            background-color: rgba(17, 25, 40, 0.3);
+            border-radius: 50%;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+
+    button {
+      padding: 15px;
+      background-color: rgba(230, 74, 105, 0.553);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(230, 74, 105, 0.796);
+      }
+
+      &.logout {
+        padding: 10px;
+        background-color: #1a73e8;
+      }
+    }
+  }
+}

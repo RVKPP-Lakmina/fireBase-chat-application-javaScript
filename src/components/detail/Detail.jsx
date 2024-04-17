@@ -1,5 +1,6 @@
 import React from "react";
 import "./detail.css";
+import { auth } from "../../lib/firebase/firebase";
 
 const Detail = () => {
   return (
@@ -45,7 +46,11 @@ const Detail = () => {
                 />
                 <span>photo_2024.png</span>
               </div>
-              <img src="/download.png" alt="download image" className="download-icon-image" />
+              <img
+                src="/download.png"
+                alt="download image"
+                className="download-icon-image"
+              />
             </div>
             <div className="photo-item">
               <div className="photo-detail">
@@ -55,7 +60,11 @@ const Detail = () => {
                 />
                 <span>photo_2024.png</span>
               </div>
-              <img src="/download.png" alt="download image" className="download-icon-image" />
+              <img
+                src="/download.png"
+                alt="download image"
+                className="download-icon-image"
+              />
             </div>
             <div className="photo-item">
               <div className="photo-detail">
@@ -65,7 +74,11 @@ const Detail = () => {
                 />
                 <span>photo_2024.png</span>
               </div>
-              <img src="/download.png" alt="download image" className="download-icon-image" />
+              <img
+                src="/download.png"
+                alt="download image"
+                className="download-icon-image"
+              />
             </div>
           </div>
         </div>
@@ -76,7 +89,9 @@ const Detail = () => {
           </div>
         </div>
         <button>Block User</button>
-        <button className="logout">Logout</button>
+        <button className="logout" onClick={() => auth.signOut()}>
+          Logout
+        </button>
       </div>
     </div>
   );

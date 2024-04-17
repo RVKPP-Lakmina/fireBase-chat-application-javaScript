@@ -1,9 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./chatList.css";
 import AddUser from "../../addUser/AddUser";
+import { doc, onSnapshot, getDoc } from "firebase/firestore";
+import { store } from "../../../lib/firebase/firebase";
+import { useUserStore } from "../../../lib/stores/stores";
+import { dbCollectionNames } from "../../../constants/collectionNames";
+import { useChatStore } from "../../../lib/stores/chatStores";
 
 const ChatList = () => {
   const [appMode, setAppMode] = useState(false);
+  const { currentUser } = useUserStore();
+  const { changeChat } = useChatStore();
+  const [chats, setChats] = useState([]);
+
+  useEffect(() => {
+    const unSub = onSnapshot(
+      doc(store, dbCollectionNames.chatListCollection, currentUser.id),
+      async (res) => {
+        const userDetailsItem = res.data().chats;
+
+        const allPromisses = userDetailsItem.map(async (userDetail) => {
+          const userDocRef = doc(
+            store,
+            dbCollectionNames.userCollection,
+            userDetail.receiverId
+          );
+          const userDocSnap = await getDoc(userDocRef);
+
+          return { ...userDetail, user: userDocSnap.data() };
+        });
+
+        const chatData = await Promise.all(allPromisses);
+
+        setChats(chatData.sort((a, b) => b.updatedAt - a.updatedAt));
+      }
+    );
+
+    return () => {
+      unSub();
+    };
+  }, [currentUser.id]);
+
+  const handleSelect = async (chat) => {
+    changeChat(chat.chatId, chat.user);
+  };
 
   return (
     <div className="chat-list">
@@ -19,120 +59,30 @@ const ChatList = () => {
           name="add-icon"
           onClick={() => setAppMode((prev) => !prev)}
         />
-        <AddUser/>
+        {appMode && <AddUser />}
       </div>
 
       <div className="chat-items">
-        <div className="chat-item">
-          <img
-            src="/avatar.png"
-            alt="chat-item-avatar"
-            name="chat-item-avatar-icon"
-          />
-          <div className="texts">
-            <span>Jane Doe</span>
-            <p>message</p>
-          </div>
-        </div>
-        <div className="chat-item">
-          <img
-            src="/avatar.png"
-            alt="chat-item-avatar"
-            name="chat-item-avatar-icon"
-          />
-          <div className="texts">
-            <span>Jane Doe</span>
-            <p>message</p>
-          </div>
-        </div>
-        <div className="chat-item">
-          <img
-            src="/avatar.png"
-            alt="chat-item-avatar"
-            name="chat-item-avatar-icon"
-          />
-          <div className="texts">
-            <span>Jane Doe</span>
-            <p>message</p>
-          </div>
-        </div>
-        <div className="chat-item">
-          <img
-            src="/avatar.png"
-            alt="chat-item-avatar"
-            name="chat-item-avatar-icon"
-          />
-          <div className="texts">
-            <span>Jane Doe</span>
-            <p>message</p>
-          </div>
-        </div>
-        <div className="chat-item">
-          <img
-            src="/avatar.png"
-            alt="chat-item-avatar"
-            name="chat-item-avatar-icon"
-          />
-          <div className="texts">
-            <span>Jane Doe</span>
-            <p>message</p>
-          </div>
-        </div>
-        <div className="chat-item">
-          <img
-            src="/avatar.png"
-            alt="chat-item-avatar"
-            name="chat-item-avatar-icon"
-          />
-          <div className="texts">
-            <span>Jane Doe</span>
-            <p>message</p>
-          </div>
-        </div>
-        <div className="chat-item">
-          <img
-            src="/avatar.png"
-            alt="chat-item-avatar"
-            name="chat-item-avatar-icon"
-          />
-          <div className="texts">
-            <span>Jane Doe</span>
-            <p>message</p>
-          </div>
-        </div>
-        <div className="chat-item">
-          <img
-            src="/avatar.png"
-            alt="chat-item-avatar"
-            name="chat-item-avatar-icon"
-          />
-          <div className="texts">
-            <span>Jane Doe</span>
-            <p>message</p>
-          </div>
-        </div>
-        <div className="chat-item">
-          <img
-            src="/avatar.png"
-            alt="chat-item-avatar"
-            name="chat-item-avatar-icon"
-          />
-          <div className="texts">
-            <span>Jane Doe</span>
-            <p>message</p>
-          </div>
-        </div>
-        <div className="chat-item">
-          <img
-            src="/avatar.png"
-            alt="chat-item-avatar"
-            name="chat-item-avatar-icon"
-          />
-          <div className="texts">
-            <span>Jane Doe</span>
-            <p>message</p>
-          </div>
-        </div>
+        {chats.length > 0 &&
+          chats.map((chat) => {
+            return (
+              <div
+                className="chat-item"
+                key={chat.chatId}
+                onClick={() => handleSelect(chat)}
+              >
+                <img
+                  src={chat.user.avatar || "/avatar.png"}
+                  alt={chat.user.avatar || "chat-item-avatar"}
+                  name={chat.user.avatar || "chat-item-avatar-icon"}
+                />
+                <div className="texts">
+                  <span>{chat.user.userName}</span>
+                  <p>{chat.lastMessage}</p>
+                </div>
+              </div>
+            );
+          })}
       </div>
     </div>
   );

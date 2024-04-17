@@ -6,6 +6,7 @@ const Bottom = ({
   setOpenEmojiPicker,
   textMessage,
   setTextMessage,
+  handleMessageSend
 }) => {
     
   const handleEmojiClickEvents = (event) => {
@@ -52,7 +53,7 @@ const Bottom = ({
           />
         </div>
       </div>
-      <button className="send-button"> Send </button>
+      <button className="send-button" onClick={handleMessageSend}> Send </button>
     </div>
   );
 };

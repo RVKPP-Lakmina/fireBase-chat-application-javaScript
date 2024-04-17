@@ -51,7 +51,7 @@ const AddUser = () => {
 
       await setDoc(newChatRef, {
         createdAt: serverTimestamp(),
-        message: [],
+        messages: [],
       });
 
       await handleUpdateDoc(chatListRef, user, currentUser, newChatRef);

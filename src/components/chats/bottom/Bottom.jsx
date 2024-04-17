@@ -6,9 +6,11 @@ const Bottom = ({
   setOpenEmojiPicker,
   textMessage,
   setTextMessage,
-  handleMessageSend
+  handleMessageSend,
+  handleImageSend,
+  isCurrentUserBlocked,
+  isReceiverBlocked,
 }) => {
-    
   const handleEmojiClickEvents = (event) => {
     setTextMessage((prev) => prev + event.emoji);
     setOpenEmojiPicker(false);
@@ -17,10 +19,18 @@ const Bottom = ({
   return (
     <div className="bottom">
       <div className="icons">
-        <img
-          src="/img.png"
-          alt="img-image-avatar"
-          name="img-image-avatar-icon"
+        <label htmlFor="imgUploadDoc">
+          <img
+            src="/img.png"
+            alt="img-image-avatar"
+            name="img-image-avatar-icon"
+          />
+        </label>
+        <input
+          type="file"
+          id="imgUploadDoc"
+          onChange={handleImageSend}
+          style={{ display: "none" }}
         />
         <img
           src="/camera.png"
@@ -36,8 +46,13 @@ const Bottom = ({
       <input
         type="text"
         value={textMessage}
-        placeholder="Type a message..."
+        placeholder={
+          isCurrentUserBlocked || isReceiverBlocked
+            ? "You cannot send any messages"
+            : "Type a message..."
+        }
         onChange={(e) => setTextMessage(e.target.value)}
+        disabled={isCurrentUserBlocked || isReceiverBlocked}
       />
       <div className="emoji">
         <img
@@ -53,7 +68,14 @@ const Bottom = ({
           />
         </div>
       </div>
-      <button className="send-button" onClick={handleMessageSend}> Send </button>
+      <button
+        className="send-button"
+        onClick={handleMessageSend}
+        disabled={isCurrentUserBlocked || isReceiverBlocked}
+      >
+        {" "}
+        Send{" "}
+      </button>
     </div>
   );
 };

@@ -1,12 +1,16 @@
 import React from "react";
 
-const Center = ({ toTheEndRef, chat }) => {
-
-  console.log(chat)
+const Center = ({ toTheEndRef, chat, img, currentUser }) => {
+  console.log(chat);
   return (
     <div className="center">
       {chat?.messages?.map((message) => {
-        <div className="message own" key={message.createdAt}>
+        <div
+          className={`message ${
+            message.senderId === currentUser.id ? "own" : ""
+          }`}
+          key={message.createdAt}
+        >
           {message.img && (
             <img
               src={message.img}
@@ -20,6 +24,13 @@ const Center = ({ toTheEndRef, chat }) => {
           </div>
         </div>;
       })}
+      {img.url && (
+        <div className="message own">
+          <div className="texts">
+            <img src={img.url} alt="" />
+          </div>
+        </div>
+      )}
       <div ref={toTheEndRef}></div>
     </div>
   );

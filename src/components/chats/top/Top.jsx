@@ -1,16 +1,16 @@
 import React from "react";
 
-const Top = () => {
+const Top = ({ user }) => {
   return (
     <div className="top">
       <div className="user">
         <img
-          src="/avatar.png"
+          src={user?.avatar || "/avatar.png"}
           alt="user-image-avatar"
           name="user-image-avatar-icon"
         />
         <div className="texts">
-          <span>John Doe</span>
+          <span>{user?.userName}</span>
           <p>Active 3h ago</p>
         </div>
       </div>
